@@ -38,7 +38,7 @@ namespace ParsingTesting
             pars.SetA("41");
             pars.ClickPlusA();
             string actual = pars.GetResult();
-            Assert.That(actual, Is.EqualTo("42"));
+            Assert.That(actual, Is.EqualTo("42 + 0 = 42"));
         }
         [Test]
         public void PlusBTest()
@@ -47,7 +47,7 @@ namespace ParsingTesting
             pars.SetB("41");
             pars.ClickPlusB();
             string actual = pars.GetResult();
-            Assert.That(actual, Is.EqualTo("42"));
+            Assert.That(actual, Is.EqualTo("0 + 42 = 42"));
         }
         [Test]
         public void MinusATest()
@@ -56,7 +56,7 @@ namespace ParsingTesting
             pars.SetA("41");
             pars.ClickMinusA();
             string actual = pars.GetResult();
-            Assert.That(actual, Is.EqualTo("40"));
+            Assert.That(actual, Is.EqualTo("40 + 0 = 40"));
         }
         [Test]
         public void MinusBTest()
@@ -65,7 +65,7 @@ namespace ParsingTesting
             pars.SetB("41");
             pars.ClickMinusB();
             string actual = pars.GetResult();
-            Assert.That(actual, Is.EqualTo("40"));
+            Assert.That(actual, Is.EqualTo("0 + 40 = 40"));
         }
         [Test]
         public void PlusADoubleTest()
@@ -75,7 +75,7 @@ namespace ParsingTesting
             pars.ClickPlusA();
             pars.ClickPlusA();
             string actual = pars.GetResult();
-            Assert.That(actual, Is.EqualTo("43"));
+            Assert.That(actual, Is.EqualTo("43 + 0 = 43"));
         }
         [Test]
         public void MinusADoubleTest()
@@ -85,7 +85,7 @@ namespace ParsingTesting
             pars.ClickMinusA();
             pars.ClickMinusA();
             string actual = pars.GetResult();
-            Assert.That(actual, Is.EqualTo("39"));
+            Assert.That(actual, Is.EqualTo("39 + 0 = 39"));
         }
         [Test]
         public void OperatorMinusTest()
@@ -95,7 +95,7 @@ namespace ParsingTesting
             pars.SetB("40");
             pars.ClickOperation("-");
             string actual = pars.GetResult();
-            Assert.That(actual, Is.EqualTo("1"));
+            Assert.That(actual, Is.EqualTo("41 - 40 = 1"));
         }
         [Test]
         public void OperatorMultiplyTest()
@@ -105,7 +105,7 @@ namespace ParsingTesting
             pars.SetB("12");
             pars.ClickOperation("*");
             string actual = pars.GetResult();
-            Assert.That(actual, Is.EqualTo("144"));
+            Assert.That(actual, Is.EqualTo("12 * 12 = 144"));
         }
         [Test]
         public void OperatorDivideTest()
@@ -115,7 +115,7 @@ namespace ParsingTesting
             pars.SetB("9");
             pars.ClickOperation("/");
             string actual = pars.GetResult();
-            Assert.That(actual, Is.EqualTo("2"));
+            Assert.That(actual, Is.EqualTo("18 / 9 = 2"));
         }
         [Test]
         public void OperatorPlusTest()
@@ -125,7 +125,7 @@ namespace ParsingTesting
             pars.SetB("41");
             pars.ClickOperation("+");
             string actual = pars.GetResult();
-            Assert.That(actual, Is.EqualTo("82"));
+            Assert.That(actual, Is.EqualTo("41 + 41 = 82"));
         }
 
         [Test]
@@ -136,20 +136,52 @@ namespace ParsingTesting
             pars.SetB("0");
             pars.ClickOperation("/");
             string actual = pars.GetResult();
-            Assert.That(actual, Is.EqualTo("null"));
+            Assert.That(actual, Is.EqualTo("18 / 0 = null"));
         }
 
-        [TestCase ("a", "b")]
-        [TestCase ("a", "1")]
-        [TestCase ("1", "b")]
-        public void SetStringTest(string A, string B)
+        [Test]
+        public void SetAStringTest()
         {
 
             ParsingWebClass pars = new ParsingWebClass(Driver);
-            pars.SetA(A);
-            pars.SetB(B);
+            pars.SetA("a");
+            pars.SetB("2");
             string actual = pars.GetResult();
-            Assert.That(actual, Is.EqualTo("null"));
+            Assert.That(actual, Is.EqualTo("null + 2 = null"));
+        }
+
+        [Test]
+        public void SetBStringTest()
+        {
+
+            ParsingWebClass pars = new ParsingWebClass(Driver);
+            pars.SetA("1");
+            pars.SetB("d");
+            string actual = pars.GetResult();
+            Assert.That(actual, Is.EqualTo("1 + null = null"));
+        }
+
+        [Test]
+        public void SetBothStringTest()
+        {
+
+            ParsingWebClass pars = new ParsingWebClass(Driver);
+            pars.SetA("abc");
+            pars.SetB("bca");
+            string actual = pars.GetResult();
+            Assert.That(actual, Is.EqualTo("null + null = null"));
+        }
+
+        [TestCase("0", "")]
+        [TestCase("", "")]
+        [TestCase("", "0")]
+        public void SetEmptyString(string a, string b)
+        {
+            ParsingWebClass pars = new ParsingWebClass(Driver);
+            pars.SetA(a);
+            pars.SetB(b);
+            string actual = pars.GetResult();
+            Assert.That(actual, Is.EqualTo("0 + 0 = 0"));
         }
 
         [TearDown]

@@ -86,15 +86,8 @@ namespace ParsingLibrary
         }
         public string GetResult()
         {
-            return Driver.FindElement(Result).Text.Split(' ').Last();
+            return Driver.FindElement(Result).Text;
         }
-        public string GetResultA()
-        {
-            return Driver.FindElement(Result).Text.Split(' ')[0];
-        }
-        public string GetResultB()
-        {
-            return Driver.FindElement(Result).Text.Split(' ')[2];
-        }
+
     }
 }
